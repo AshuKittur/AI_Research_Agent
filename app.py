@@ -50,7 +50,7 @@ with col2:
                     time.sleep(0.01)  # Simulate processing time
                     progress_bar.progress(percent_complete + 1)
                 
-                result = complete_research(query)
+                result = complete_research(query, api_key)
                 progress_bar.empty()
                 
                 # Results Section
