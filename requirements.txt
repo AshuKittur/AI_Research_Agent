@@ -1,3 +1,13 @@
+streamlit
+packaging==23.2
 langchain
-langchain_ollama
+langchain-ollama
+langchain-community
+langchain-text-splitters
+python-dotenv
+IPython
+tavily-python
 requests
+openai              # Only if you're using OpenAI models
+beautifulsoup4      # If parsing HTML (some Tavily content is HTML-heavy)
+pandas              # If tabular data is needed or you're doing data formatting
