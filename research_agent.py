@@ -1,20 +1,13 @@
-import os
 import requests
 from textwrap import dedent
-
-# Initialize Ollama
 from langchain_ollama import OllamaLLM
 from langchain_community.llms import Ollama
 from langchain.prompts import PromptTemplate
 from langchain.chains import LLMChain
 
-# Configure Ollama model with the local URL
-llm = OllamaLLM(model="llama2", api_url="http://localhost:11434")
-os.environ["TAVILY_API_KEY"] = "Your-API-Key"
-
 # Tavily search
-def tavily_search(query):
-    headers = {"Authorization": f"Bearer {os.getenv('TAVILY_API_KEY')}"}
+def tavily_search(query, api_key):
+    headers = {"Authorization": f"Bearer {api_key}"}
     params = {
         "query": query,
         "search_depth": "advanced",
@@ -39,7 +32,7 @@ def format_research_results(results):
         """))
     return "\n".join(formatted)
 
-# Setup prompt
+# Setup prompt and LLM
 prompt = PromptTemplate(
     input_variables=["research_results"],
     template="""
@@ -55,9 +48,9 @@ Format the response in Markdown for better readability.
 llm = Ollama(model="llama2", temperature=0.7)
 chain = LLMChain(llm=llm, prompt=prompt)
 
-# Final function to be used in app.py
-def complete_research(query):
-    raw_results = tavily_search(query)
+# Final function
+def complete_research(query, api_key):
+    raw_results = tavily_search(query, api_key)
     research_results = format_research_results(raw_results)
     response = chain.invoke({"research_results": research_results})
     formatted_response = (
@@ -65,5 +58,4 @@ def complete_research(query):
         .replace('•', '-') 
         .replace('\n\n\n', '\n\n')
     )
-    final_output = f"# Research Results: {query}\n\n{formatted_response}"
-    return final_output
+    return f"# Research Results: {query}\n\n{formatted_response}"
