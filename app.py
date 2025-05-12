@@ -2,6 +2,8 @@ import streamlit as st
 import time
 from research_agent import complete_research
 
+api_key = st.secrets["TAVILY_API_KEY"]
+
 # App Configuration
 st.set_page_config(
     page_title="Research Agent Pro",
